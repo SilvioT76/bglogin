@@ -19,3 +19,4 @@ Le tecnologie utilizzate in questo progetto sono principalmente:
 Questo libro è stato prodotto con il sostegno delle seguenti associazioni culturali:
 - [ManagerZEN](http://www.managerzen.it/)
 - [WeWorkItalia](http://www.weworkitalia.com/), utilizzatrice autorizzata del marchio [ResponsabItaly](http://www.responsabitaly.org/)
+# bglogin

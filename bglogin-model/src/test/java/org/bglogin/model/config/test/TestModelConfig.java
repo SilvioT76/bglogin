@@ -24,6 +24,7 @@ public class TestModelConfig {
 			.setType(EmbeddedDatabaseType.HSQL)
 			.addScript("classpath:sql/test/user_role_init_datatables.sql")
 			.addScript("classpath:sql/test/user_role_init_data.sql")
+			.addScript("classpath:sql/test/activity_init_datatable.sql")
 			.build();
 		return db;
 	}

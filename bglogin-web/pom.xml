@@ -31,13 +31,19 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet-api.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
@@ -57,28 +63,28 @@
 			<version>${spring.security.version}</version>
 		</dependency>
 	</dependencies>
-	
+
 	<profiles>
 		<profile>
-		    <id>dev</id>
-		    <activation>
+			<id>dev</id>
+			<activation>
 				<activeByDefault>true</activeByDefault>
-		    </activation>
+			</activation>
 			<properties>
-	            <profile-id>DEV</profile-id>
-	        </properties>		    
+				<profile-id>DEV</profile-id>
+			</properties>
 		</profile>
 		<profile>
-		    <id>int</id>
+			<id>int</id>
 			<properties>
-	            <profile-id>INT</profile-id>
-	        </properties>		    
+				<profile-id>INT</profile-id>
+			</properties>
 		</profile>
 		<profile>
-		    <id>prod</id>
+			<id>prod</id>
 			<properties>
-	            <profile-id>PROD</profile-id>
-	        </properties>		    
+				<profile-id>PROD</profile-id>
+			</properties>
 		</profile>
 	</profiles>
 
@@ -86,32 +92,32 @@
 		<finalName>bglogin</finalName>
 		<resources>
 			<resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                	<exclude>**/log4j.properties</exclude>
-                	<exclude>**/db.properties</exclude>
-                </excludes>
-                <filtering>true</filtering>
-            </resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/log4j.properties</exclude>
+					<exclude>**/db.properties</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
 		</resources>
-		<plugins>			
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					 <webResources>
-	                    <resource>
-	                        <directory>${project.parent.basedir}/resources/${project.activeProfiles[0].id}</directory>
-	                        <targetPath>WEB-INF/classes</targetPath>
-	                        <includes>
-	                            <include>**/*.properties</include>
-	                        </includes>
-	                        <filtering>true</filtering>
-	                    </resource>
-	                </webResources>
-	                <encoding>UTF-8</encoding>
-	                <failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<directory>${project.parent.basedir}/resources/${project.activeProfiles[0].id}</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+							<includes>
+								<include>**/*.properties</include>
+							</includes>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+					<encoding>UTF-8</encoding>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>

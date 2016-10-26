@@ -29,4 +29,7 @@ public interface IUserDao {
 	 * @return List<User>
 	 */
 	public List<User> getAllUsers();
+
+	
+	
 }

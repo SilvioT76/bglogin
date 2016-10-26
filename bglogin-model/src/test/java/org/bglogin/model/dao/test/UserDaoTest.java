@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bglogin.model.config.test.TestModelConfig;
 import org.bglogin.model.dao.IUserDao;
+import org.bglogin.model.entity.Activity;
 import org.bglogin.model.entity.User;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,6 +40,7 @@ public class UserDaoTest {
 	        User userByUsername = userDao.getUserByUsername(users.get(0).getUsername());
 	        Assert.assertNotNull(userByUsername);
 	        Assert.assertEquals(users.get(0).getUsername(), userByUsername.getUsername());
+	    
         }
     }
 

@@ -8,32 +8,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.bglogin.model.dao.IUserDao;
+import org.bglogin.model.dao.INewUserDao;
 import org.bglogin.model.entity.Role;
-import org.bglogin.model.entity.User;
+import org.bglogin.model.entity.NewUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
 /**
- * Implementation of DAO Service for entity User
+ * Implementation of DAO Service for entity NewUser
  * 
  * @author Giuseppe Vincenzi
  *
  */
 @Repository
-public class UserDaoImpl implements IUserDao {
+public class NewUserDaoImpl implements INewUserDao {
 	/**
 	 * LOGGER
 	 */
-	private Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
+	private Logger LOGGER = Logger.getLogger(NewUserDaoImpl.class);
 
 	/**
 	 * DataSource injected by Spring
@@ -44,20 +42,20 @@ public class UserDaoImpl implements IUserDao {
 	/**
 	 * Utility variable to map join tables
 	 */
-	private User currentUser;
+	private NewUser currentUser;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public User getUserById(int userId) {
+	public NewUser getUserById(String userId) {
 		String sql = "SELECT * FROM user LEFT OUTER JOIN user_roles ON user_roles.user_id=user.user_id LEFT OUTER JOIN role ON user_roles.role_id=role.role_id WHERE user.user_id = ?";
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, userId);
-			User user = null;
+			ps.setString(1, userId);
+			NewUser user = null;
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				user = mapping(rs);
@@ -79,33 +77,22 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	/**
-	 * Utility method to map a ResultSet in an User bean
+	 * Utility method to map a ResultSet in an NewUser bean
 	 * 
 	 * @param rs
 	 *            ResultSet
-	 * @return User
+	 * @return NewUser
 	 * @throws SQLException
 	 *             exception
 	 */
-	private User mapping(ResultSet rs) throws SQLException {
-		User user;
-		if (currentUser == null || rs.getInt("user_id") != currentUser.getUserId()) {
-			user = new User();
-			user.setUserId(rs.getInt("user_id"));
+	private NewUser mapping(ResultSet rs) throws SQLException {
+		NewUser user;
+		if (currentUser == null || rs.getString("user_id") != currentUser.getUserId()) {
+			user = new NewUser();
+			user.setUserId(rs.getString("user_id"));
 			user.setUsername(rs.getString("username"));
 			user.setPassword(rs.getString("password"));
-			Date creationDate = rs.getDate("creation_date");
-			if (creationDate != null) {
-				Calendar creationDateCal = Calendar.getInstance();
-				creationDateCal.setTime(creationDate);
-				user.setCreationDate(creationDateCal);
-			}
-			Date lastLogin = rs.getDate("last_login");
-			if (lastLogin != null) {
-				Calendar lastLoginCal = Calendar.getInstance();
-				lastLoginCal.setTime(lastLogin);
-				user.setLastLogin(lastLoginCal);
-			}
+			
 			currentUser = user;
 		} else {
 			user = currentUser;
@@ -122,14 +109,14 @@ public class UserDaoImpl implements IUserDao {
 	
 	
 	@Override
-	public List<User> getAllUsers() {
-		List<User> users = new ArrayList<User>();
+	public List<NewUser> getAllUsers() {
+		List<NewUser> users = new ArrayList<NewUser>();
 		String sql = "SELECT * FROM user LEFT OUTER JOIN user_roles ON user_roles.user_id=user.user_id LEFT OUTER JOIN role ON user_roles.role_id=role.role_id";
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			User user = null;
+			NewUser user = null;
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				user = mapping(rs);
@@ -154,14 +141,14 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	@Override
-	public User getUserByUsername(String username) {
-		String sql = "SELECT * FROM user LEFT OUTER JOIN user_roles ON user_roles.user_id=user.user_id LEFT OUTER JOIN role ON user_roles.role_id=role.role_id WHERE username = ?";
+	public NewUser getUserByUsername(String username) {
+		String sql = "SELECT * FROM public.\"USER\" WHERE username = ?";
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
-			User user = null;
+			NewUser user = null;
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				user = mapping(rs);

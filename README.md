@@ -20,3 +20,4 @@ Questo libro è stato prodotto con il sostegno delle seguenti associazioni cultu
 - [ManagerZEN](http://www.managerzen.it/)
 - [WeWorkItalia](http://www.weworkitalia.com/), utilizzatrice autorizzata del marchio [ResponsabItaly](http://www.responsabitaly.org/)
 # bglogin
+# bglogin

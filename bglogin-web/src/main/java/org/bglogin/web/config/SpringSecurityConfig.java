@@ -27,19 +27,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
 				.passwordEncoder(passwordEncoder())
-				.usersByUsernameQuery("select username, password, enabled from public.\"USER\" where username=?")
+				.usersByUsernameQuery("select username,password,enabled from public.\"USER\" where username=?")
 				.authoritiesByUsernameQuery(
-						"select username as username,b.role as role from public.\"USER\" as a "
-						+ "inner join public.\"ROLE\" as b on b.role_id=a.role_id "
+						"select username, role from public.\"USER\"  "
+						+ "inner join public.\"ROLE\" on public.\"ROLE\".role_id=public.\"USER\".role_id "
 						+ "where username=?");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		http.authorizeRequests()
-		.antMatchers("/", "/welcome/**").access("hasRole('ADMIN') or hasRole('USER')")
-		.antMatchers("/admin/**").access("hasRole('ADMIN')")
+		http.authorizeRequests()	
+		.antMatchers("/user**").access("hasRole('ROLE_USER')")
+		.antMatchers("/admin**").access("hasRole('ROLE_ADMIN')")
 		.and().formLogin().loginPage("/index").defaultSuccessUrl("/welcome")
 		.failureUrl("/index?error")
 		.usernameParameter("username").passwordParameter("password")

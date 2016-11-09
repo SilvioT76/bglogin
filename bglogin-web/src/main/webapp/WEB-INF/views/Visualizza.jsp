@@ -33,7 +33,7 @@
 					<th>Delete</th>
 			</thead>
 			<tbody>
-			
+		
 				<c:forEach items="${activities}" var="activity">
 				
 					<tr id=item_${activity.id} class="danger">
@@ -42,13 +42,13 @@
 						<td><c:out value="${activity.date}" /></td>
 						<td><c:out value="${activity.owner}" /></td>
 						<td><form method="GET" action="<%= request.getContextPath()%>/activities/${activity.id}/edit">
-								<button type="SUBMIT" class="btn btn-primary btn-xs">
+								<button type="SUBMIT" class="btn btn-primary btn-xs" <c:if test="${Role=='USER'}">disabled</c:if>>
 									<span class="glyphicon glyphicon-pencil"></span>
 								</button>
 							</form>
 							</td>
 						<td><form id="deleteForm_${activity.id}" class="${activity.id}"> 
-								<button type="submit" value="DELETE" class="btn btn-primary btn-xs btn-danger">
+								<button type="submit" value="DELETE" class="btn btn-primary btn-xs btn-danger" <c:if test="${Role=='USER'}">disabled</c:if>>
 								<span class="glyphicon glyphicon-trash"></span>
 								</button> 	
 								<script> 	

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -181,7 +182,114 @@ public class UserDaoImpl implements IUserDao {
 			}
 		}
 	}
-	
-	
 
+	@Override
+	public void create(String name, String password, String email) {
+		String sql = "INSERT INTO public.\"USER\" (username,password,role_id,enabled,email) "+
+				"VALUES ('" + name + "','" + password + "','2','true','" + email + "')";
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			conn.setAutoCommit(false);
+			Statement st = conn.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+			conn.commit();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					LOGGER.error(e);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public int check(String name, String column) {
+		String sql = "SELECT COUNT(username) as controllo from public.\"USER\" where " + column + " = '" + name + "'";
+		Connection conn = null;
+		int check;
+		try {
+			conn = dataSource.getConnection();
+			conn.setAutoCommit(false);
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			rs.next();
+			check = Integer.valueOf(rs.getString("controllo"));
+			st.close();
+			conn.commit();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					LOGGER.error(e);
+				}
+			}
+		}
+		return check;
+	}
+	
+	@Override
+	public String recPwd(String name, String email) {
+		String sql = "SELECT password from public.\"USER\" where username = '" + name + "' and email = '"+ email + "'";
+		Connection conn = null;
+		String pwd;
+		try {
+			conn = dataSource.getConnection();
+			conn.setAutoCommit(false);
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			rs.next();
+			pwd = rs.getString("password");
+			st.close();
+			conn.commit();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					LOGGER.error(e);
+				}
+			}
+		}
+		return pwd;
+	}
+
+	@Override
+	public int updatePwd(String name, String pwd, String email) {
+		String sql = "UPDATE public.\"USER\" set password = '" + pwd + "' where username = '" + name + "' and email = '" + email +"'";
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			conn.setAutoCommit(false);
+			Statement st = conn.createStatement();
+			int rs = st.executeUpdate(sql);
+			st.close();
+			conn.commit();
+			conn.close();
+			return rs;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					LOGGER.error(e);
+				}
+			}
+		}
+	}
 }

@@ -8,7 +8,12 @@ package org.bglogin.web.enums;
 public enum LoginMessageKeyEnum {
 	LOGIN_USER_OK("login.user.ok"),
 	LOGIN_ADMIN_OK("login.admin.ok"),
-	LOGIN_LOGOUT_OK("login.logout.ok");
+	LOGIN_LOGOUT_OK("login.logout.ok"),
+	LOGIN_PERMISSION_ERROR("login.permission.error"),
+	LOGIN_USER_PRESENT("login.user.present"),
+	LOGIN_EMAIL_PRESENT("login.email.present"),
+	INVIO_PASSWORD("invio.password"),
+	LOGIN_NEW_USER("login.new.user");
 	
 	/**
 	 * Key message used by Spring MVC

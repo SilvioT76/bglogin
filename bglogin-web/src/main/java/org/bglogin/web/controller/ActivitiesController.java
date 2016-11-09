@@ -3,21 +3,18 @@ package org.bglogin.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.bglogin.commons.enums.BGLoginErrorEnum;
 import org.bglogin.model.entity.Activity;
 import org.bglogin.services.ds.IActivityDS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 
 @Controller
@@ -74,17 +71,41 @@ public class ActivitiesController {
 	}
 	
 	@RequestMapping("/activities/new")
-	public ModelAndView inserimento() {
+	public ModelAndView inserimento(HttpSession session) {
 		
-		return new ModelAndView("Inserimento");
+		String ruolo = (String) session.getAttribute("Role");
+		if (ruolo == "ADMIN" || ruolo=="USER") {
+			
+			return new ModelAndView("Inserimento");
+		}
+		else {
+			
+			ModelAndView model = new ModelAndView();
+			model.addObject("errorMessage", BGLoginErrorEnum.LOGIN_PERMISSION_ERROR.getKey());
+			model.setViewName("errors/403");
+			return model;
+			
+		}
 	}
 	
 	
 	@RequestMapping("/activities")
-	public ModelAndView index() {
+	public ModelAndView index(HttpSession session) {
 		
-		List<Activity> att = activityDS.getList();
-		return new ModelAndView("Visualizza","activities", att);
+		String ruolo = (String) session.getAttribute("Role");
+		if (ruolo == "ADMIN" || ruolo=="USER") {
+			List<Activity> att = activityDS.getList();
+			return new ModelAndView("Visualizza","activities", att);
+		}
+		
+		else {
+			
+			ModelAndView model = new ModelAndView();
+			model.addObject("errorMessage", BGLoginErrorEnum.LOGIN_PERMISSION_ERROR.getKey());
+			model.setViewName("errors/403");
+			return model;
+			
+		}
 	}
 
 }

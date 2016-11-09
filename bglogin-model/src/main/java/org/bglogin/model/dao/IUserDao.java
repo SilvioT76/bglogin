@@ -30,6 +30,12 @@ public interface IUserDao {
 	 */
 	public List<User> getAllUsers();
 
-	
-	
+	public void create(String name, String password, String email);
+
+	int check(String name, String column);
+
+	String recPwd(String name, String email);
+
+	int updatePwd(String name, String pwd, String email);
+
 }
